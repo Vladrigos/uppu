@@ -16,3 +16,18 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['namespace' => 'File', 'prefix' => 'files'], function(){
+    Route::get('/', 'FileController@index')
+            ->name('file.index');
+    Route::get('upload', 'FileController@create')
+            ->name('file.upload')
+            ->middleware('auth');
+    Route::post('/', 'FileController@store')
+            ->name('file.store')
+            ->middleware('auth');
+});
