@@ -39,7 +39,7 @@
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('file.upload') }}">{{ __('Upload') }}</a>
+                            <a class="nav-link" href="{{ route('files.upload') }}">{{ __('Upload') }}</a>
                         </li>
                         <!-- Authentication Links -->
                         @guest
@@ -67,6 +67,9 @@
                                     <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
                                         @csrf
                                     </form>
+                                    <a class="dropdown-item" href="{{ route('logout') }}">
+                                        {{ __('My Uploads') }}
+                                    </a>
                                 </div>
                             </li>
                         @endguest

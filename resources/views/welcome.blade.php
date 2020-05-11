@@ -85,8 +85,8 @@
                 </div>
 
                 <div class="links">
-                    <a href="{{ route('file.upload') }}">Upload your file</a>
-                    <a href="{{ route('file.index') }}">Last uploaded files</a>
+                    <a href="{{ route('files.upload') }}">Upload your file</a>
+                    <a href="{{ route('files.index') }}">Last uploaded files</a>
                 </div>
             </div>
         </div>
