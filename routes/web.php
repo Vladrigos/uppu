@@ -22,12 +22,20 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 Route::group(['namespace' => 'File', 'prefix' => 'files'], function(){
+
     Route::get('/', 'FileController@index')
-            ->name('file.index');
+            ->name('files.index');
+
     Route::get('upload', 'FileController@create')
-            ->name('file.upload')
+            ->name('files.upload')
             ->middleware('auth');
+
+    Route::get('/{id}', 'FileController@show')
+        ->name('files.download')
+        ->where('id', '[0-9]+');
+
     Route::post('/', 'FileController@store')
-            ->name('file.store')
+            ->name('files.store')
             ->middleware('auth');
+
 });
