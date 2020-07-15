@@ -18,7 +18,8 @@ class FileRepository extends CoreRepository
     /**
      * На страницу
      */
-    const PERPAGE = 25;
+    const PERPAGE = 12;
+
     /**
      * @return mixed|string
      */
@@ -31,19 +32,26 @@ class FileRepository extends CoreRepository
     {
         $columns = [
             'id',
+            'path',
             'name',
             'size',
-            'comment',
             'created_at',
+            'user_id',
         ];
 
         $result = $this->startConditions()
             ->select($columns)
             ->orderBy('created_at', 'DESC')
-            ->with(['user:id,name'])
+            ->with([
+                /*
+                'user' => function($query){
+                    $query->select(['id', 'email']);
+                },
+                */
+                'user:id,username'
+            ])
             ->take(self::COUNTFILES)
             ->paginate(self::PERPAGE);
-
 
         return $result;
     }

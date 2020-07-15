@@ -1,14 +1,15 @@
 <?php
 
-namespace App\Http\Controllers\File;
+namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Repositories\FileRepository;
 use App\Services\FileService;
 use Illuminate\Http\Request;
 use App\Models\File;
 use Illuminate\Support\Facades\Auth;
 
-class FileController extends BaseController
+class FileController extends Controller
 {
     /**
      * @var FileService
@@ -61,16 +62,16 @@ class FileController extends BaseController
      */
     public function store(Request $request)
     {
-//      UploadedFile::createFromBase();
+        $request->validate([
+            //'content' => 'required',
+//            'file'    => 'required|mimes:txt',
+        ]);
+
+        $path = "uploads/user_" . Auth::user()->id;
+        $request->file('file')->store($path, 'public');
 
         $data = $this->service->getDataForStore($request);
-
-//        $this->validate($request,[
-//            //'content' => 'required',
-//            'file'    => 'required|mimes:txt',
-//        ]);
-        $path = "uploads/" . "user_" . Auth::user()->id;
-        $request->file('file')->store($path, 'public');
+        $data['path'] = $request->file('file')->store($path, 'public');
 
         $item = (new File())->create($data);
 
@@ -81,14 +82,19 @@ class FileController extends BaseController
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param File $file
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(File $file)
     {
-        $item = File::all()->find($id);
-
-        return view('files.show', compact('item'));
+        //dd($file->comments()->paginate(20));
+        //прописать отношения
+        return view('files.show', [
+            'file' => $file,
+            'comments' => $file
+                ->comments()
+                ->paginate(5),
+        ]);
     }
 
 //$item = File::find($id);

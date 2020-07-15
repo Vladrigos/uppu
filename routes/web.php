@@ -19,23 +19,28 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', 'HomeController@index')->name('home');
-
-Route::group(['namespace' => 'File', 'prefix' => 'files'], function(){
-
+Route::group(['prefix' => '/files'], function () {
     Route::get('/', 'FileController@index')
-            ->name('files.index');
+        ->name('files.index');
 
-    Route::get('upload', 'FileController@create')
-            ->name('files.upload')
-            ->middleware('auth');
-
-    Route::get('/{id}', 'FileController@show')
+    Route::get('/{file}', 'FileController@show')
         ->name('files.download')
-        ->where('id', '[0-9]+');
+        ->where('file', '[0-9]+');
+
+    Route::get('/upload', 'FileController@create')
+        ->name('files.upload')
+        ->middleware('auth');
 
     Route::post('/', 'FileController@store')
-            ->name('files.store')
-            ->middleware('auth');
-
+        ->name('files.store')
+        ->middleware('auth');
 });
+
+Route::get('/profiles/{user:username}', 'ProfilesController@show')
+    ->name('profiles.show');
+
+//Route::get('/profiles/')
+//    ->name('profiles.edit');
+
+//Route::get('/vue', 'HomeController@test')
+//    ->name('vue.test');

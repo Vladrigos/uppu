@@ -2,6 +2,7 @@
 
 
 namespace App\Services;
+
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
@@ -12,7 +13,7 @@ class FileService
      * @param Request $request
      * @return array
      */
-    public function getDataForStore(Request $request)
+    public function getDataForStore(Request $request) //переделать что бы получал файл
     {
         $file = $request->file('file');
 
@@ -20,18 +21,15 @@ class FileService
         $extension = $file->getClientOriginalExtension();
         $size = $file->getSize();
         $hashName = $file->hashName();
-
-        $comment = $request->get('comment');
-
+        dd(getimagesize($file));
         $userId = Auth::user()->id;
 
         $data = [
-            'name' => $name,
+            'name'      => $name,
             'extension' => $extension,
-            'size' => $size,
+            'size'      => $size,
             'hash_name' => $hashName,
-            'comment' => $comment,
-            'user_id' => $userId,
+            'user_id'   => $userId,
         ];
 
         return $data;
